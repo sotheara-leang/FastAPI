@@ -6,6 +6,7 @@ from fastapi import Depends
 
 from main.dao.item import ItemDao
 from main.dto.item import ItemDetailDto
+from main.common.dto.response import ResponseDto
 
 router = InferringRouter()
 
@@ -18,4 +19,4 @@ class ItemAPI:
     @router.get("/", response_model=List[ItemDetailDto])
     async def read_items(self, skip: int = 0, limit: int = 100):
         items = self.item_dao.get_items(skip=skip, limit=limit)
-        return items
+        return ResponseDto.success(items)

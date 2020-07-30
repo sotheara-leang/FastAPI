@@ -1,17 +1,36 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.staticfiles import StaticFiles
+
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 from main.database import Base, engine
 from main.web.api import item, user
 from main.web.mvc import index
 from main.web.mvc import item as item_mvc
 
+from main.common.dto.response import ResponseDto
+from main.common.type.sys_code import SysCode
+
 # create database tables
 Base.metadata.create_all(bind=engine)
 
 # instance FastAPI
 app = FastAPI()
+
+
+#################### Configuration #################### 
+
+# error handlers
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder(ResponseDto.fail(SysCode.INVALID, exc.errors()))
+    )
+
 
 # static files
 app.mount("/static", StaticFiles(directory="webapp/public"), name="static")
