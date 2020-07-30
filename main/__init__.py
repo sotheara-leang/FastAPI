@@ -7,4 +7,10 @@ from main.common.configuration import Configuration
 PROJ_HOME = os.path.join(os.getcwd())
 os.environ['PROJ_HOME'] = PROJ_HOME
 
-logger = Logger('main/conf/logging.yml')
+__logger__ = Logger('main/conf/logging.yml')
+
+# config
+config = Configuration('main/conf/application.yml')
+
+def get_conf():
+    return config

@@ -2,18 +2,20 @@ from fastapi import Depends, HTTPException
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 
+from main.common.configuration import Configuration
+from main.common.dto.response import ResponseDto
+from main import get_conf
+
 from main.dto.user import CreateUserDto
 from main.dto.item import CreateItemDto
 from main.dao.user import UserDao
-from main.common.dto.response import ResponseDto
-
 
 router = InferringRouter()
 
 
 @cbv(router)
 class UserAPI:
-    
+    config: Configuration = Depends(get_conf)
     user_dao: UserDao = Depends(UserDao)
 
     @router.post("/")
