@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+SQLAlchemy
+async-exit-stack
+async-generator
+aiofiles
+jinja2
+pytest
+requests
+PyYAML
+fastapi-utils
