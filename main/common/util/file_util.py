@@ -1,11 +1,14 @@
 import os
 
 
-def get_root_dir():
+def get_app_dir():
     return os.environ['PROJ_HOME']
 
+def get_app_file(*paths):
+    return path_join(get_app_dir(), *paths)
+
 def get_webapp_dir(*paths):
-    return path_join(get_root_dir(), 'webapp', *paths)
+    return path_join(get_app_dir(), 'webapp', *paths)
 
 def get_tmp_dir(*paths):
     return get_webapp_dir('tmp', *paths)
@@ -29,7 +32,7 @@ def get_dir_name(path: str):
     return get_file_name(get_dir_path(path))
 
 def get_file_path(file: str):
-    return os.path.join(get_root_dir(), file)
+    return os.path.join(get_app_dir(), file)
 
 def get_file_name(path: str):
     return os.path.basename(path)
