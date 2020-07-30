@@ -2,4 +2,5 @@ from main.common.type.des_enum import DescEnum
 
 
 class ResultCode(str, DescEnum):
-    pass
+
+    USER_EMAIL_EXIST    =   '10100', 'Email Existed'

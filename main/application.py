@@ -13,6 +13,7 @@ from main.web.mvc import item as item_mvc
 
 from main.common.dto.response import ResponseDto
 from main.common.type.sys_code import SysCode
+from main.common.exception import SysException
 
 # create database tables
 Base.metadata.create_all(bind=engine)
@@ -29,6 +30,20 @@ async def validation_exception_handler(request, exc):
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content=jsonable_encoder(ResponseDto.fail(SysCode.INVALID, exc.errors()))
+    )
+
+@app.exception_handler(SysException)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder(ResponseDto.fail(exc.code, exc.data))
+    )
+
+@app.exception_handler(Exception)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder(ResponseDto.fail())
     )
 
 

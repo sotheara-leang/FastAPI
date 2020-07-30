@@ -4,11 +4,13 @@ from fastapi_utils.inferring_router import InferringRouter
 
 from main.common.configuration import Configuration
 from main.common.dto.response import ResponseDto
+from main.common.exception import SysException
 from main import get_conf
 
 from main.dto.user import CreateUserDto
 from main.dto.item import CreateItemDto
 from main.dao.user import UserDao
+from main.type.result_code import ResultCode
 
 router = InferringRouter()
 
@@ -22,7 +24,7 @@ class UserAPI:
     async def create_user(self, user: CreateUserDto):
         db_user = self.user_dao.get_user_by_email(email=user.email)
         if db_user:
-            raise HTTPException(status_code=400, detail="Email already registered")
+            raise SysException(ResultCode.USER_EMAIL_EXIST)
         return ResponseDto.success(self.user_dao.create_user(user=user))
 
     @router.get("/")
